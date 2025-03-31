@@ -26,16 +26,16 @@ jobs:
           base_uri: https://anz.ast.checkmarx.net/
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          additional_params: '--scan-types SAST --report-format markdown --output-path .'
+          additional_params: '--scan-types SAST --report-format sarif --output-path .'
 
       - name: Check if SARIF file was generated
         run: |
-          echo "Looking for md:"
-          find . -type f -name "cx_result.md" -exec ls -lah {} \;
+          echo "Looking for sarif:"
+          ls -lah cx_result.sarif || echo "❌ SARIF not found"
 
       - name: Upload Markdown Report
-        uses: actions/upload-artifact@v4.6.2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           name: checkmarx-summary
-          path: ./cx_result.md
+          path: cx_result.sarif
         if: always()
