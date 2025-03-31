@@ -33,8 +33,9 @@ jobs:
           echo "Looking for checkmarx.sarif:"
           ls -lah cx_result.sarif || echo "SARIF file NOT found"
 
-      - name: Upload SARIF to GitHub
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Upload Markdown Report
+        uses: actions/upload-artifact@v3
         with:
-          sarif_file: cx_result.sarif
-        continue-on-error: true
+          name: checkmarx-summary
+          path: cx_result.md
+        if: always()
