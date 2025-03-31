@@ -30,8 +30,8 @@ jobs:
 
       - name: Check if SARIF file was generated
         run: |
-          echo "Looking for checkmarx.sarif:"
-          ls -lah || echo "SARIF file NOT found"
+          echo "Looking for md:"
+          find . -type f -name "cx_result.md" -exec ls -lah {} \;
 
       - name: Upload Markdown Report
         uses: actions/upload-artifact@v4.6.2
