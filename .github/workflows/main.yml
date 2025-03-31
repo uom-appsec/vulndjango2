@@ -36,7 +36,7 @@ jobs:
       - name: Print first 300 lines of SARIF file
         run: |
           echo "📝 Previewing SARIF output (first 50 lines):"
-          head -n 300 cx_result.sarif
+          cat cx_result.sarif
 
       - name: Upload SARIF to GitHub
         uses: github/codeql-action/upload-sarif@v3
