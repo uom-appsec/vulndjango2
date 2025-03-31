@@ -26,4 +26,15 @@ jobs:
           base_uri: https://anz.ast.checkmarx.net/
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          additional_params: '--scan-types SCA'
+          additional_params: '--scan-types SCA --report-format sarif --output-path .'
+
+      - name: Check if SARIF file was generated
+        run: |
+          echo "Looking for checkmarx.sarif:"
+          ls -lah checkmarx.sarif || echo "SARIF file NOT found"
+
+      - name: Upload SARIF to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: checkmarx.sarif
+        continue-on-error: true
