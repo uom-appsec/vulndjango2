@@ -1,4 +1,4 @@
-name: Checkmarx SCA Only
+name: Checkmarx SAST Only
 
 on:
   push:
@@ -31,10 +31,10 @@ jobs:
       - name: Check if SARIF file was generated
         run: |
           echo "Looking for checkmarx.sarif:"
-          ls -lah checkmarx.sarif || echo "SARIF file NOT found"
+          ls -lah cx_result.sarif || echo "SARIF file NOT found"
 
       - name: Upload SARIF to GitHub
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: checkmarx.sarif
+          sarif_file: cx_result.sarif
         continue-on-error: true
