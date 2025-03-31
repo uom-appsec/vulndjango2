@@ -26,7 +26,7 @@ jobs:
           base_uri: https://anz.ast.checkmarx.net/
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          additional_params: '--scan-types SCA --report-format sarif --output-path .'
+          additional_params: '--scan-types SAST --report-format sarif --output-path .'
 
       - name: Check if SARIF file was generated
         run: |
