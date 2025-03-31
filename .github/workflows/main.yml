@@ -1,32 +1,29 @@
-name: Checkmarx One Scan
+name: Checkmarx SCA Only
+
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
       - master
       - dev
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  build:
+  checkmarx-sca:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
-      - name: Checkmarx One CLI Action
-        uses: checkmarx/ast-github-action@main #Github Action version
+
+      - name: Run Checkmarx SCA scan
+        uses: Checkmarx/ast-github-action@2.0.23
         with:
-          project_name: uom-appsec/vulndjango1
+          project_name: ${{ github.repository }}
           branch: ${{ github.ref }}
           cx_tenant: ast-unimelb
           base_uri: https://anz.ast.checkmarx.net/
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          additional-params: '--report-format sarif --output-path .'
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: checkmarx.sarif
-        continue-on-error: true
+          additional_params: '--scan-types SCA'
