@@ -33,10 +33,10 @@ jobs:
           echo "Looking for sarif:"
           ls -lah cx_result.sarif || echo "❌ SARIF not found"
 
-      - name: Print first 50 lines of SARIF file
+      - name: Print first 300 lines of SARIF file
         run: |
           echo "📝 Previewing SARIF output (first 50 lines):"
-          head -n 50 cx_result.sarif
+          head -n 300 cx_result.sarif
 
       - name: Upload SARIF to GitHub
         uses: github/codeql-action/upload-sarif@v3
