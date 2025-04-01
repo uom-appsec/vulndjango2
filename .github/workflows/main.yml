@@ -26,24 +26,12 @@ jobs:
           base_uri: https://anz.ast.checkmarx.net/
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          additional_params: '--scan-types SAST --report-format sarif --output-path .'
+          additional_params: '--scan-types SAST --report-format pdf --output-name cx_sast.pdf --output-path .'
 
-      - name: Check if SARIF file was generated
-        run: |
-          echo "Looking for sarif:"
-          ls -lah cx_result.sarif || echo "❌ SARIF not found"
-
-      - name: Print first 300 lines of SARIF file
-        run: |
-          echo "📝 Previewing SARIF output (first 50 lines):"
-          cat cx_result.sarif
-      - name: Patch SARIF levels
-        run: |
-          jq '(.runs[].results[] | select(.level == "")).level = "warning"' cx_result.sarif > patched.sarif
 
       - name: Upload SARIF to GitHub
-        uses: github/codeql-action/upload-sarif@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
-          sarif_file: patched.sarif
-          token: ${{ secrets.UPLOAD_TOKEN }}
+          name: checkmarx-sast
+          path: cx_sast.pdf
         continue-on-error: true
