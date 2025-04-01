@@ -26,12 +26,12 @@ jobs:
           base_uri: https://anz.ast.checkmarx.net/
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          additional_params: '--scan-types SAST --report-format json --output-name cx_sast --output-path .'
+          additional_params: '--scan-types SAST --report-format md --output-name cx_sast --output-path .'
 
 
       - name: Upload SARIF to GitHub
         uses: actions/upload-artifact@v4.6.2
         with:
           name: checkmarx-sast
-          path: ./cx_sast.json
+          path: ./cx_sast.md
         continue-on-error: true
